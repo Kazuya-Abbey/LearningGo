@@ -1,22 +1,29 @@
 package main
 
-import "fmt"
-
-type person struct {
-	age  int
-	name string
-}
-
-func modifyFails(i int, s string, p person) {
-	i = i * 2
-	s = "さようなら"
-	p.name = "Bob"
-}
+import (
+	"io"
+	"log"
+	"os"
+)
 
 func main() {
-	p := person{}
-	i := 2
-	s := "こんにちは"
-	modifyFails(i, s, p)
-	fmt.Println(i, s, p)
+	if len(os.Args) < 2 {
+		log.Fatal("ファイルが指定されていません")
+	}
+	f, err := os.Open(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	data := make([]byte, 2048)
+	for {
+		count, err := f.Read(data)
+		os.Stdout.Write(data[:count])
+		if err != nil {
+			if err != io.EOF {
+				log.Fatal(err)
+			}
+			break
+		}
+	}
 }
