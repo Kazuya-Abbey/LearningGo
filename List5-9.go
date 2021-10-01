@@ -2,21 +2,28 @@ package main
 
 import "fmt"
 
-type person struct {
-	age  int
-	name string
+func modMap(m map[int]string) {
+	m[2] = "こんにちは"
+	m[3] = "さようなら"
+	delete(m, 1)
 }
 
-func modifyFails(i int, s string, p person) {
-	i = i * 2
-	s = "さようなら"
-	p.name = "Bob"
+func modSlice(s []int) {
+	for k, v := range s {
+		s[k] = v * 2
+	}
+	s = append(s, 10)
 }
 
 func main() {
-	p := person{}
-	i := 2
-	s := "こんにちは"
-	modifyFails(i, s, p)
-	fmt.Println(i, s, p)
+	m := map[int]string{
+		1: "一番目",
+		2: "二番目",
+	}
+	modMap(m)
+	fmt.Println(m)
+
+	s := []int{1, 2, 3}
+	modSlice(s)
+	fmt.Println(s)
 }
