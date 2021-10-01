@@ -1,29 +1,17 @@
 package main
 
-import (
-	"io"
-	"log"
-	"os"
-)
+import "fmt"
+
+func makeMult(base int) func(int) int {
+	return func(factor int) int {
+		return base * factor
+	}
+}
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatal("ファイルが指定されていません")
-	}
-	f, err := os.Open(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-	data := make([]byte, 2048)
-	for {
-		count, err := f.Read(data)
-		os.Stdout.Write(data[:count])
-		if err != nil {
-			if err != io.EOF {
-				log.Fatal(err)
-			}
-			break
-		}
+	twoBase := makeMult(2)
+	threeBase := makeMult(3)
+	for i := 0; i < 3; i++ {
+		fmt.Println(twoBase(i), threeBase(i))
 	}
 }
